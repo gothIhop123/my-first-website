@@ -1,0 +1,27 @@
+h1 {
+    color: rgb(0, 0, 0);
+    text-align: center;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 10px;
+    font-size: 3em;
+}
+
+button {
+    align-content: center;
+    font-size: 3em;
+    padding: 5px 30px;
+}
+
+p {
+    text-align: center;
+}
+
+label {
+    font-size: 3em;
+}
+
+#dice {
+    width: 150px; 
+    height: 150px;
+    object-fit: contain; 
+}
