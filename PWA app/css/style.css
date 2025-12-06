@@ -20,8 +20,29 @@ label {
     font-size: 3em;
 }
 
-#dice {
-    width: 150px; 
+#dice, #d20 {
+    width: 150px;
     height: 150px;
-    object-fit: contain; 
+    border: 3px solid black;
+    border-radius: 8px;
+    padding: 0; /* VERY IMPORTANT: stops size from changing */
+}
+
+#d20 {
+    width: 150px;
+    height: 150px;
+
+    justify-content: center;
+    align-items: center;
+
+    border: 3px solid black;
+    border-radius: 8px;
+
+    font-size: 3em;
+    background: white;
+
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+    padding: 0; /* VERY IMPORTANT: stops size from changing */
 }
