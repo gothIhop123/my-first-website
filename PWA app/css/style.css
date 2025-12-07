@@ -1,5 +1,4 @@
 h1 {
-    color: rgb(0, 0, 0);
     text-align: center;
     border-bottom: 2px solid #ccc;
     padding-bottom: 10px;
@@ -20,29 +19,49 @@ label {
     font-size: 3em;
 }
 
-#dice, #d20 {
+.dices {
+    display: flex;
+    justify-content: center;  /* centers both columns horizontally */
+    gap: 100px;               /* space between the two dice columns */
+    margin-top: 40px;
+    align-items: center;
+    margin-left: 300px;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;   /* stack image + button vertically */
+    align-items: center;      /* center elements horizontally */
+    gap: 20px;                /* space between box and button */
+}
+
+#dice {
     width: 150px;
     height: 150px;
     border: 3px solid black;
     border-radius: 8px;
-    padding: 0; /* VERY IMPORTANT: stops size from changing */
+    font-size: 3em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #d20 {
     width: 150px;
     height: 150px;
-
-    justify-content: center;
-    align-items: center;
-
     border: 3px solid black;
     border-radius: 8px;
-
     font-size: 3em;
-    background: white;
+    display: flex;
+    visibility: hidden;
+    justify-content: center;
+    align-items: center;
+}
 
-    overflow: hidden;
-    white-space: nowrap;
-    box-sizing: border-box;
-    padding: 0; /* VERY IMPORTANT: stops size from changing */
+#d20roll {
+    visibility: hidden;
+}
+
+.case4 {
+    visibility: hidden;
 }
