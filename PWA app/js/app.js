@@ -11,7 +11,7 @@ const d20roll = document.getElementById('d20roll')
 dice.src = `images/dice1.png`;
 let roll_times = 2;      //times you can roll before being unable to
 let pausetime = 1800;    //constant time it takes for delays
-let randomNum = Math.floor(Math.random() * (2 /*max*/ - 2 /*min*/ + 1)) + 2 /*min*/; //randomise a number from 1 to 6
+var randomNum = null;
 let quarterchance = Math.floor(Math.random() * 4) + 1; //randomise a number from 1 to 4
 let lastNum = null;
 
@@ -22,7 +22,12 @@ let activated4 = false;
 let activated5 = false;
 
 //functions
+function randomise() {
+    randomNum = Math.floor(Math.random() * (6 /*max*/ - 1 /*min*/ + 1)) + 1 /*min*/; //randomise a number from 1 to 6
+};
+
 function dice_animation() { //dice roll and outcomes
+    randomise(randomNum);
     let frames = 20;
 
     let animation = setInterval(() => {
@@ -188,7 +193,6 @@ function d20_die_hider() {
 
 roll.onclick = function () {
     roll.disabled = true;
-
     if (Math.random() < 1 / 3) {
         dice_animation();
         //roll_times--;
