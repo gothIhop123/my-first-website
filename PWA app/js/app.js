@@ -221,3 +221,4 @@ d20roll.onclick = function () {
         d20roll.disabled = false;
     }, pausetime);
 };
+
