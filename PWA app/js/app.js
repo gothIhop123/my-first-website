@@ -55,7 +55,6 @@ function outcomes() {
                     activated3 = true;
                 } else {
                     case3or4()
-                    activated3 = false;
                 }
                 break;
             case 4:                                         
@@ -66,7 +65,7 @@ function outcomes() {
                 } else {
                     case3or4()
                     case4img.style.visibility = 'hidden';   //hides case4img 
-                    activated4 = false;
+
                 }
                 break;
             case 2:                                         
@@ -89,10 +88,10 @@ function outcomes() {
                 } else {
                     label.textContent = 'Sorry about last time'
                     case2or5();
-                    activated2 = false;
                 }
                 break;
             case 5:
+            //
                 checkNum.textContent = 'Num is 2 or 5';     //check if Num is 2 or 5
             case 1:           
             //has a 1 in 25 chance to send you to fun land
@@ -107,6 +106,10 @@ function outcomes() {
 }
 
 function case6() {
+    if (activated3 === true) {
+        d20.style.borderColor = 'white';
+        d20.style.color = 'white';
+    };
     d20roll.style.visibility = 'visible';
     d20.style.visibility = 'visible';
 };
@@ -118,6 +121,7 @@ function case3or4() {
             body.style.background = 'white';
             h1.style.color = 'black';
             label.style.color = 'black';
+            activated3 = false;
             break;
         case 3:
 
@@ -153,7 +157,6 @@ function case1() {
 function d20animation() {       //d20 die animation
     let d20num = Math.floor(Math.random() * (20 /*max*/ - 1 /*min*/ + 1)) + 1 /*min*/; //randomise a number 
     let frames = 20;
-
     let animation = setInterval(() => {
         let temp = Math.floor(Math.random() * 20) + 1;      //animation for d20 roll
         d20.textContent = temp;
