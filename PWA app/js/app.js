@@ -1,3 +1,5 @@
+const { act } = require("react");
+
 //const { text } = require("express");
 const roll = document.getElementById('roll');
 const label = document.getElementById('label');
@@ -20,8 +22,10 @@ let activated2 = false;
 let activated3 = false;
 let activated4 = false;
 let activated5 = false;
+let activated6 = false;
 
 //functions
+
 function randomise() {
     randomNum = Math.floor(Math.random() * (6 /*max*/ - 1 /*min*/ + 1)) + 1 /*min*/; //randomise a number from 1 to 6
 };
@@ -65,7 +69,7 @@ function outcomes() {
                 } else {
                     case3or4()
                     case4img.style.visibility = 'hidden';   //hides case4img 
-
+                    activated4 = false;
                 }
                 break;
             case 2:                                         
@@ -98,12 +102,12 @@ function outcomes() {
                 case1()
                 break;
             case 6:
-            //reveals a d20 die       
+            //reveals a d20 die     
                 case6();
                 break;
         };
     }, 100);
-}
+};
 
 function case6() {
     if (activated3 === true) {
