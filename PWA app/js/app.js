@@ -7,6 +7,7 @@ const dice = document.getElementById('dice')
 const body = document.getElementById('body')
 const d20 = document.getElementById('d20')
 const d20roll = document.getElementById('d20roll')
+const blunt = document.getElementById('blunt')
 
 //important setup
 dice.src = `images/dice1.png`;
@@ -67,7 +68,7 @@ let activated5 = false;
 
 //                           ANIMATION FUNCTIONS
 function dice_animation() { //dice roll and outcomes
-    randomNum = rand(1, 6) //randomise the d20 die
+    randomNum = rand(4, 4) //randomise the d20 die
     quarterchance = rand(1, 4)
     let frames = 20;
 
@@ -81,7 +82,7 @@ function dice_animation() { //dice roll and outcomes
             label.textContent = randomNum; //display final num
             outcomes(randomNum);
         };
-    }, 80);
+    }, 100);
 };
 
 function outcomes() {
@@ -121,7 +122,7 @@ function outcomes() {
 };
 
 function d20animation() {       //d20 die animation
-    d20num = rand(1, 20) //randomise the d20 die
+    d20num = rand(20, 20) //randomise the d20 die
     let frames = 20;
     let animation = setInterval(() => {
         let temp = Math.floor(Math.random() * 20) + 1;      //animation for d20 roll
@@ -136,17 +137,31 @@ function d20animation() {       //d20 die animation
                 d20case6()
             }
         };
-    }, 80);
+    }, 100);
 };
 
 //                                D20 CASES
 
 function d20case4() {
-    switch (d20num) {
+    switch (d20num) {                            //not working properly, the roll doesn't get disabled while the gif is active
         case 20:
-            window.alert('type shit')
+            roll.disabled = true;
+            setTimeout(() => {         
+                
+                window.alert('weed')
+                
+                body.style.background = 'lightgreen';
+                body.style.background = "url('images/rekt.gif')"; 
+                
+                setTimeout(() => {
+                    lightmode()
+                    roll.disabled = false;             
+                }, 3000);
+            }, 80);
             break;
+        
         default:
+            label.textContent = 'nah';
             break;
     }
     d20_die_hider();
@@ -155,18 +170,26 @@ function d20case4() {
 function d20case6() {
     switch (d20num) {
         case 1:
-            window.alert('67')
+            setTimeout(() => {
+                window.alert('67')
+            }, 80);
             break;
         case 7:
+            setTimeout(() => {
+                window.alert('sickswan')
+            }, 80);
             window.alert('sickswan')
             break;
         case 9:
-            window.alert('nice')
+            setTimeout(() => {
+                window.alert('nice')
+            }, 80);
             setTimeout(() => {
                 window.open('https://pornhub.com', 'about:idk').focus();
             }, 500);
             break;
         default:
+            label.textContent = 'nah';
             break;
     };
     d20_die_hider();
@@ -183,7 +206,7 @@ function case1() {
         }
     } else {
         setTimeout(() => {
-            label.textContent = 'unlucky!';
+            label.textContent = 'this does nothing unlucky!';
         }, 500);
     }
 };
