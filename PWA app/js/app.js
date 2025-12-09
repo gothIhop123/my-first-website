@@ -1,5 +1,7 @@
 //const { act } = require("react");
 //const { text } = require("express");
+import * as data from "/js/database.js";
+//necessary consts
 const roll = document.getElementById('roll');
 const label = document.getElementById('label');
 const case5img = document.getElementById('case5')
@@ -7,7 +9,6 @@ const dice = document.getElementById('dice')
 const body = document.getElementById('body')
 const d20 = document.getElementById('d20')
 const d20roll = document.getElementById('d20roll')
-const blunt = document.getElementById('blunt')
 const jumpscare  = document.getElementById('jumpscare')
 const jumpscare_audio = document.getElementById('jumpscare_audio')
 const weed_audio = document.getElementById('weed_audio')
@@ -16,17 +17,20 @@ const weed_audio = document.getElementById('weed_audio')
 dice.src = `images/dice1.png`;
 let roll_times = 2;      //times you can roll before being unable to
 let pausetime = 1800;    //constant time it takes for delays
-var randomNum = null;
+var randomNum = null;   //turns the var into a global for use outside functions
 var d20num = null;
 var quarterchance = null;
-let lastNum = null;
+let counter = 0;
 
 //enables toggles for cases
 let activated2 = false;
 let activated3 = true;
 let activated4 = false;
 let activated5 = false;
+let space_pressed = false;
+//                                HELPER FUNCTIONS
 
+//inverts all the colors
 function darkmode() {
     body.style.background = '#081018';
     body.style.color = '#e6f3f2';
@@ -34,6 +38,7 @@ function darkmode() {
     d20.style.color = '#e6f3f2';
 };
 
+//reverts all the colors
 function lightmode() {
     body.style.background = '#e6f3f2';
     body.style.color = '#081018';
@@ -41,6 +46,7 @@ function lightmode() {
     d20.style.color = '#081018';
 };
 
+//disables the regular die from being rolled when the d20 die is visible
 function roll_disabler() {
     let check = setInterval(() => {
         if (d20roll.style.visibility === 'visible'){
@@ -52,6 +58,7 @@ function roll_disabler() {
     }, 40);
 };
 
+//hides the d20 die after 200 milliseconds
 function d20_die_hider() {
     setTimeout(() => {
         d20roll.style.visibility = 'hidden';
@@ -59,33 +66,36 @@ function d20_die_hider() {
     }, 400);
 };
 
+
 function rand(min, max) {
-    return Math.floor(Math.random() * (max /*max*/ - min /*min*/ + 1)) + min /*min*/; //randomise a number from 1 to 6
+    return Math.floor(Math.random() * (max /*max*/ - min /*min*/ + 1)) + min /*min*/; //randomise a number
 };
 
+//has a 2 in 3 chance to fail on clicking the die 
 function diebtn() {
     roll.disabled = true;
     if (Math.random() < 1 / 3) {
         dice_animation();
-        //roll_times--;
-
+        roll_times--;
+        
         setTimeout(() => {
             if (roll_times <= 0) {
                 roll.disabled = true;
             } else {
-                setTimeout(() => {
+                setTimeout(() => {      //makes the die disabled for 800 millisecond after use
                 roll.disabled = false;
                 }, 800);
             }
         }, pausetime);
 
-    } else {
+    } else {            //instantly makes the die usable if it failed
         label.textContent = 'Try again?';
         roll.disabled = false;
     };
 };
 
-function d20btn() {
+//makes the d20 button disables after use to prevent spam
+function d20btn() {     
     d20roll.disabled = true;
     d20animation();
     setTimeout(() => {
@@ -97,9 +107,10 @@ function d20btn() {
 //functions
 
 //                           ANIMATION FUNCTIONS
+
 function dice_animation() { //dice roll and outcomes
-    randomNum = rand(1, 6) //randomise the reg die
-    quarterchance = rand(1, 4) //randomise num 1 to 4
+    randomNum = rand(1, 6); //randomise the reg die
+    quarterchance = rand(1, 4); //randomise num 1 to 4
     let frames = 20;
 
     let animation = setInterval(() => {     //make animation of die rolling
@@ -115,6 +126,7 @@ function dice_animation() { //dice roll and outcomes
     }, 100);
 };
 
+//all the necessary cases
 function outcomes() {
     setTimeout(() => {
         switch (randomNum) { //checks number
@@ -122,37 +134,43 @@ function outcomes() {
             case 3:                                         
             //inverses the color of the page and EVERYTHING ELSE
                 case3();
+                counter += 1;
                 break;
             
             case 4:     
             //shows d20
-                case4();                  
+                case4();
+                counter += 1;                  
                 break;
             
             case 2:                                         
             //gives seizures to epileptic people
                 case2();
+                counter += 1;
                 break;
             
             case 5:
             //shows funny image
                 case5();
+                counter += 1;
                 break;
             case 1:           
             //has a 1 in 25 chance to send you to fun land
                 case1();
+                counter += 1;
                 break;
             
             case 6:
             //reveals a d20 die     
                 case6();
+                counter += 1;
                 break;
         };
     }, 100);
 };
 
 function d20animation() {       //d20 die animation
-    d20num = rand(1, 20) //randomise the d20 die
+    d20num = rand(1, 20);  //randomise the d20 die  //is a global variable now 
     let frames = 20;
     let animation = setInterval(() => {
         let temp = Math.floor(Math.random() * 20) + 1;      //animation for d20 roll
@@ -162,34 +180,34 @@ function d20animation() {       //d20 die animation
             clearInterval(animation);
             d20.textContent = d20num; //display final num
             if (randomNum === 4) { 
-                d20case4()
+                d20case4();
             } else {
-                d20case6()
+                d20case6();
             }
         };
     }, 100);
 };
 
 //                                D20 CASES
-
+//has a 1 in 20 chance to change the background to the mlg memes from 2008 temporarily and makes the background lightmode when it is over. 
 function d20case4() {
-    switch (d20num) {                            //not working properly, the roll doesn't get disabled while the gif is active
+    switch (d20num) {                            
         case 20:
             roll.disabled = true;
             setTimeout(() => {         
                 
-                window.alert('weed')
+                window.alert('weed');
                 weed_audio.currentTime = 0;
                 weed_audio.play();
                 body.style.background = 'lightgreen';
                 body.style.background = "url('images/rekt.gif')"; 
 
                 setTimeout(() => {
-                    lightmode()
+                    lightmode();
                     weed_audio.pause();          
                 }, 5000);
             }, 80);
-
+            counter += 2;
             break;
         
         default:
@@ -199,25 +217,29 @@ function d20case4() {
     d20_die_hider();
 };
 
+//creates funny numbers that start with 6 and alerts certain things with 69 sending you to the hub
 function d20case6() {
     switch (d20num) {
         case 1:
-            setTimeout(() => {
-                window.alert('67')
+            setTimeout(() => {  //each need a timeout to properly show that final frame of the animation
+                window.alert('67');
+                counter += 1;
             }, 80);
             break;
         case 7:
             setTimeout(() => {
-                window.alert('sickswan')
+                window.alert('sickswan');
+                counter += 1;
             }, 80);
-            window.alert('sickswan')
             break;
         case 9:
             setTimeout(() => {
-                window.alert('nice')
+                window.alert('nice');
+                counter += 1;
             }, 80);
             setTimeout(() => {
                 window.open('https://pornhub.com', 'about:idk').focus();
+                counter += 1;
             }, 500);
             break;
         default:
@@ -229,20 +251,25 @@ function d20case6() {
 
 //                           DIE CASES FUNCTIONS
 
+//has a one in 25 chance of opening another website
 function case1() {
     if (Math.random() < 1 / 25) {   //1 in 25 chance to open new tabs
         let i = 2;
         while (i >= 0) {
-            window.open('https://pornhub.com', 'about:idk').focus();
+            window.open('https://pornhub.com', 'about:idk').focus();    //opens 3 tabs of the allocated website
             i--;
         }
+        counter += 2;
     } else {
-        label.textContent = 'this does nothing unlucky!';
+        setTimeout(() => {
+            label.textContent = 'this does nothing unlucky!';
+        }, 800);
+        
     }
 };
 
+//rapidly flashes red and blue background and yellow and green text
 function case2() {
-    case2or5();
     if (activated2 === false) {
         let frames = 30;
         let isRed = false;
@@ -255,96 +282,123 @@ function case2() {
                 clearInterval(flash);
                 lightmode()
                 if (activated3 === true) {
-                    darkmode()
+                    darkmode();
+                    case2or5();
                 }
-                activated2 = true;
+                activated2 = true;  //makes it so that getting randomNum 2 twice does not flash again
+                case2or5();
             }
-        }, 50);
+        }, 50); //lasts around 800 milliseconds
     } else {
-        label.textContent = 'Sorry about last time'
+        label.textContent = 'Sorry about last time';
         activated2 = false;
     };
 };
 
+//inverts the colors of the background and text
 function case3() {
     if (activated3 === false) {
         darkmode()
         activated3 = true;
     } else {
-        case3or4()
+        case3or4();
     }
 };
 
+//shows the d20 die to be rolled
 function case4() {
-    case3or4()
+    case3or4();
     d20roll.style.visibility = 'visible';
     d20.style.visibility = 'visible';
-    roll_disabler()
+    roll_disabler();
 };
 
+//hampter
 function case5() {
     if (activated5 === false) {
         case5img.style.visibility = 'visible';  //shows case4img
         activated5 = true;
-        case2or5()
+        setTimeout(() => {
+            case2or5();            
+        }, pausetime);
     } else {
-        case2or5()
         case5img.style.visibility = 'hidden';   //hides case4img 
         activated5 = false;
-    }
+    };
 };
 
+//shows the d20 die to be rolled with different outcomes to case 4
 function case6() {
     d20roll.style.visibility = 'visible';
     d20.style.visibility = 'visible';
-    roll_disabler()
+    roll_disabler();
 };
 
+//has a 2 in 4 chance to turn the page into lightmode if case 3 has already happened
+//has a 1 in 4 chance to send use to the feet site
 function case3or4() {
     switch (quarterchance) {
         case 1:
         case 2:
-            lightmode()
+            lightmode();
             activated3 = false;
+            counter += 1;
             break;
         case 3:
             setTimeout(() => {
-                window.location.href = "feet.html";
-            }, 500);
+                window.open("feet.html");
+            }, 200);
+            counter += 1;
             break;
     }
 };
 
+//has a 1 in 4 chance to send use to the fanfic site 
+//has a 1 in 4 chance to jumpscare the user with the sound
 function case2or5() {
     switch (quarterchance) {
         case 1:
             setTimeout(() => {
-                window.location.href = "fanfic.html";
-            }, 500);
+                window.open("fanfic.html");
+            }, 200);
+            counter += 1;
             break;
         case 2:
             jumpscare_audio.currentTime = 0;
             jumpscare_audio.play();
             jumpscare.style.visibility = 'visible';
             setTimeout(() => {
-                lightmode()
+                lightmode();
                 jumpscare.style.visibility = 'hidden';       
             }, 850);
+            counter += 1;
             break;
     }
 };
 
 //eventlisteners
-roll.addEventListener('click', diebtn)
-d20roll.addEventListener('click', d20btn)
+roll.addEventListener('click', diebtn);
+d20roll.addEventListener('click', d20btn);
 
 
 document.body.onkeydown = function(e){
-    if (e.keyCode == 32) {
-        if (d20roll.style.visibility === 'visible') {
-            d20btn()
-        } else {
-            diebtn()
+    if (e.code === "Space") {
+        e.preventDefault();  // ← STOP BUTTONS FROM FIRING AUTOMATICALLY
+        if (roll.disabled) return;
+        if (!space_pressed) {
+            space_pressed = true;
+
+            if (d20roll.style.visibility === 'visible') {
+                d20btn();
+            } else {
+                diebtn();
+            };
+
+            setTimeout(() => {
+                space_pressed = false;
+            }, pausetime);
         }
     }
-}
+};
+
+console.log(counter)

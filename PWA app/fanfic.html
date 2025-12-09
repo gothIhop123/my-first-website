@@ -198,6 +198,8 @@
         returnBtn.addEventListener('click', () => {
             if (Math.random() < 1/3) {
                 window.location = 'http://localhost:8000/'
+            } else {
+                returnBtn.textContent = 'LOL TRY AGAIN';
             }
         });
 
