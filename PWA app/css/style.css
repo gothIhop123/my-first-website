@@ -1,3 +1,7 @@
+body {
+    color: #111;
+}
+
 h1 {
     text-align: center;
     border-bottom: 2px solid #ccc;
@@ -49,7 +53,7 @@ label {
 #d20 {
     width: 150px;
     height: 150px;
-    border: 3px solid black;
+    border: 3px solid white;
     border-radius: 8px;
     font-size: 3em;
     display: flex;
@@ -64,4 +68,22 @@ label {
 
 #case5 {
     visibility: hidden;
+}
+
+.dark {
+    background: #081018;
+    color: #e6f3f2
+}
+
+#jumpscare {
+    visibility: hidden;
+    position: absolute;     /* stays in place */
+    top: 0;
+    left: 0;
+    justify-content: center;
+    width: 100vw;        /* full width (equivalent to the width of monitor)*/
+    height: 100vh;       /* full height (equivalent to the height of monitor)*/
+    object-fit: cover;   /* keeps aspect ratio while filling */
+    z-index: 9999;       /* in front of everything */
+    pointer-events: none; /* so it doesn't block clicking buttons */
 }

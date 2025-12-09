@@ -8,6 +8,9 @@ const body = document.getElementById('body')
 const d20 = document.getElementById('d20')
 const d20roll = document.getElementById('d20roll')
 const blunt = document.getElementById('blunt')
+const jumpscare  = document.getElementById('jumpscare')
+const jumpscare_audio = document.getElementById('jumpscare_audio')
+const weed_audio = document.getElementById('weed_audio')
 
 //important setup
 dice.src = `images/dice1.png`;
@@ -18,22 +21,24 @@ var d20num = null;
 var quarterchance = null;
 let lastNum = null;
 
+//enables toggles for cases
+let activated2 = false;
+let activated3 = true;
+let activated4 = false;
+let activated5 = false;
+
 function darkmode() {
-    body.style.background = 'black';
-    body.style.color = 'white';
-    h1.style.color = 'white';
-    label.style.color = 'white';
-    d20.style.borderColor = 'white';
-    d20.style.color = 'white';
+    body.style.background = '#081018';
+    body.style.color = '#e6f3f2';
+    d20.style.borderColor = '#e6f3f2';
+    d20.style.color = '#e6f3f2';
 };
 
 function lightmode() {
-    body.style.background = 'white';
-    body.style.color = 'black';
-    h1.style.color = 'black';
-    label.style.color = 'black';
-    d20.style.borderColor = 'black';
-    d20.style.color = 'black';
+    body.style.background = '#e6f3f2';
+    body.style.color = '#081018';
+    d20.style.borderColor = '#081018';
+    d20.style.color = '#081018';
 };
 
 function roll_disabler() {
@@ -58,21 +63,46 @@ function rand(min, max) {
     return Math.floor(Math.random() * (max /*max*/ - min /*min*/ + 1)) + min /*min*/; //randomise a number from 1 to 6
 };
 
-//enables toggles for cases
-let activated2 = false;
-let activated3 = false;
-let activated4 = false;
-let activated5 = false;
+function diebtn() {
+    roll.disabled = true;
+    if (Math.random() < 1 / 3) {
+        dice_animation();
+        //roll_times--;
+
+        setTimeout(() => {
+            if (roll_times <= 0) {
+                roll.disabled = true;
+            } else {
+                setTimeout(() => {
+                roll.disabled = false;
+                }, 800);
+            }
+        }, pausetime);
+
+    } else {
+        label.textContent = 'Try again?';
+        roll.disabled = false;
+    };
+};
+
+function d20btn() {
+    d20roll.disabled = true;
+    d20animation();
+    setTimeout(() => {
+        d20roll.disabled = false;
+    }, pausetime);
+};
+
 
 //functions
 
 //                           ANIMATION FUNCTIONS
 function dice_animation() { //dice roll and outcomes
-    randomNum = rand(4, 4) //randomise the d20 die
-    quarterchance = rand(1, 4)
+    randomNum = rand(1, 6) //randomise the reg die
+    quarterchance = rand(1, 4) //randomise num 1 to 4
     let frames = 20;
 
-    let animation = setInterval(() => {
+    let animation = setInterval(() => {     //make animation of die rolling
         let temp = Math.floor(Math.random() * 6) + 1;
         dice.src = `images/dice${temp}.png`;
         frames--;
@@ -122,7 +152,7 @@ function outcomes() {
 };
 
 function d20animation() {       //d20 die animation
-    d20num = rand(20, 20) //randomise the d20 die
+    d20num = rand(1, 20) //randomise the d20 die
     let frames = 20;
     let animation = setInterval(() => {
         let temp = Math.floor(Math.random() * 20) + 1;      //animation for d20 roll
@@ -149,15 +179,17 @@ function d20case4() {
             setTimeout(() => {         
                 
                 window.alert('weed')
-                
+                weed_audio.currentTime = 0;
+                weed_audio.play();
                 body.style.background = 'lightgreen';
                 body.style.background = "url('images/rekt.gif')"; 
-                
+
                 setTimeout(() => {
                     lightmode()
-                    roll.disabled = false;             
-                }, 3000);
+                    weed_audio.pause();          
+                }, 5000);
             }, 80);
+
             break;
         
         default:
@@ -205,13 +237,12 @@ function case1() {
             i--;
         }
     } else {
-        setTimeout(() => {
-            label.textContent = 'this does nothing unlucky!';
-        }, 500);
+        label.textContent = 'this does nothing unlucky!';
     }
 };
 
 function case2() {
+    case2or5();
     if (activated2 === false) {
         let frames = 30;
         let isRed = false;
@@ -231,7 +262,6 @@ function case2() {
         }, 50);
     } else {
         label.textContent = 'Sorry about last time'
-        case2or5();
         activated2 = false;
     };
 };
@@ -256,8 +286,9 @@ function case5() {
     if (activated5 === false) {
         case5img.style.visibility = 'visible';  //shows case4img
         activated5 = true;
+        case2or5()
     } else {
-        case3or4()
+        case2or5()
         case5img.style.visibility = 'hidden';   //hides case4img 
         activated5 = false;
     }
@@ -277,7 +308,9 @@ function case3or4() {
             activated3 = false;
             break;
         case 3:
-
+            setTimeout(() => {
+                window.location.href = "feet.html";
+            }, 500);
             break;
     }
 };
@@ -285,41 +318,33 @@ function case3or4() {
 function case2or5() {
     switch (quarterchance) {
         case 1:
-
+            setTimeout(() => {
+                window.location.href = "fanfic.html";
+            }, 500);
             break;
         case 2:
-
+            jumpscare_audio.currentTime = 0;
+            jumpscare_audio.play();
+            jumpscare.style.visibility = 'visible';
+            setTimeout(() => {
+                lightmode()
+                jumpscare.style.visibility = 'hidden';       
+            }, 850);
             break;
     }
 };
 
 //eventlisteners
+roll.addEventListener('click', diebtn)
+d20roll.addEventListener('click', d20btn)
 
-roll.onclick = function () {
-    roll.disabled = true;
-    if (Math.random() < 1 / 3) {
-        dice_animation();
-        //roll_times--;
 
-        setTimeout(() => {
-            if (roll_times <= 0) {
-                roll.disabled = true;
-            } else {
-                roll.disabled = false;
-            }
-        }, pausetime);
-
-    } else {
-        label.textContent = 'Try again?';
-        roll.disabled = false;
-    };
-};
-
-d20roll.onclick = function () {
-    d20roll.disabled = true;
-    d20animation();
-    setTimeout(() => {
-        d20roll.disabled = false;
-    }, pausetime);
-};
-
+document.body.onkeydown = function(e){
+    if (e.keyCode == 32) {
+        if (d20roll.style.visibility === 'visible') {
+            d20btn()
+        } else {
+            diebtn()
+        }
+    }
+}
