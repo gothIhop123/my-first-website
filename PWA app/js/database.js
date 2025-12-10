@@ -1,5 +1,6 @@
 import * as App from "/js/app.js";
 
+const data = document.getElementById('data')
 
 function fetch_data() {
     // Fetch data from the '/data' endpoint
@@ -83,6 +84,6 @@ function fetch_data() {
     })
     // Handle any errors that occur during the fetch
     .catch(error => console.error('Error fetching data:', error));
-}
+};
 
-d20roll.addEventListener('click', fetch_data);
+fetch_data();
