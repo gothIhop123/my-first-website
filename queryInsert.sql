@@ -1,51 +1,63 @@
-INSERT INTO chances(extID, Chance, Frequency)
+INSERT INTO chances(extID, description, Chance)
 VALUES
     (1,
-    'roll 1',
-    'chance',
+    "num does nothing",
+    "41%",
     )
         
     (2,
-    'roll 1',
-    'chance',
+    "send you to link",
+    "1.5%",
     )
 
     (3,
-    'roll 1',
-    'chance',
+    "flashes screen",
+    "17%",
     )
 
     (4,
-    'roll 1',
-    'chance',
+    "invert colors",
+    "17",
     )
 
     (5,
-    'roll 1',
-    'chance',
+    "gif overload of scree",
+    "0.8%",
     )
 
     (6,
-    'roll 1',
-    'chance',
+    "hampter",
+    "17%",
     )
 
     (7,
-    'roll 1',
-    'chance',
+    "reveal d20",
+    "33%",
     )
 
     (8,
-    'roll 1',
-    'chance',
+    "certain funny numbers that start with 6",
+    "2.5",
     )
 
     (9,
-    'roll 1',
-    'chance',
+    "revert colors",
+    "17%",
     )
 
     (10,
-    'roll 1',
-    'chance',
+    "send to funny page",
+    "8.3%",
     )
+
+    (11,
+    "send to fanfic page",
+    "8.3%",
+    )
+    
+    (12,
+    "jumpscare",
+    "8.3%",
+    )
+
+    
