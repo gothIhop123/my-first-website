@@ -84,6 +84,7 @@ function rand(min, max) {
 //                                                  BUTTON FUNCTIONS
 //has a 2 in 3 chance to fail on clicking the die 
 function diebtn() {
+    console.log('counter:', counter)
     roll.disabled = true;
     if (Math.random() < 1 / 3) {
         dice_animation();
