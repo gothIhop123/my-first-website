@@ -15,7 +15,6 @@ const weed_audio = document.getElementById('weed_audio')
 const checkdata = document.getElementById('checkdata')
 
 //important setup
-dice.src = `images/dice1.png`;
 let roll_times = 2;      //times you can roll before being unable to
 let pausetime = 1800;    //constant time it takes for delays
 var randomNum = null;   //turns the var into a global for use outside functions
@@ -411,11 +410,15 @@ function case2or5() {
 };
 
 //eventlisteners
-roll.addEventListener('click', diebtn);
-d20roll.addEventListener('click', d20btn);
-
-checkdata.addEventListener('click', checkdataBtn);
-
+if (roll){
+    roll.addEventListener('click', diebtn);
+}
+if (d20roll){
+    d20roll.addEventListener('click', d20btn);
+}
+if (checkdata){
+    checkdata.addEventListener('click', checkdataBtn);
+}
 
 document.body.onkeydown = function(e){
     if (e.code === "Space") {

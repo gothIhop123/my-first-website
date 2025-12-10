@@ -4,21 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="css/database.css">
 </head>
     
 <body>
     <h1>See all chances</h1>
-    <p id="footnote">(i'm bad at maths)</p>
-    <div id="data"></div>
-    <script type="module" src="database.js"></script>
-    <script type="module" src="app.js"></script>
-    <script>
-        fetch("/get-results")
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById("output").textContent =
-                    JSON.stringify(data, null, 2);
-            });
-    </script>
+    <p id="footnote">(i'm bad at maths so take it with a grain of salt)</p>
+    <div id="data-container"></div>
+    
+    <!-- JavaScript Modules -->
+    <script type="module" src="js/database.js"></script>
 </body>
 </html>

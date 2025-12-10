@@ -1,7 +1,5 @@
 import * as App from "/js/app.js";
 
-const data = document.getElementById('data')
-
 function fetch_data() {
     // Fetch data from the '/data' endpoint
     fetch('/data')
