@@ -219,6 +219,8 @@ function d20animation() {       //d20 die animation
 //has a 1 in 20 chance to change the background to the mlg memes from 2008 temporarily and makes the background lightmode when it is over. 
 function d20case4() {
     switch (d20num) {                            
+        case 1:
+        case 2:
         case 20:
             roll.disabled = true;
             setTimeout(() => {         
@@ -284,7 +286,7 @@ function d20case6() {
 
 //has a one in 25 chance of opening another website
 function case1() {
-    if (Math.random() < 1 / 25) {   //1 in 25 chance to open new tabs
+    if (Math.random() < 1 / 100) {   //1 in 25 chance to open new tabs
         let i = 2;
         while (i >= 0) {
             window.open('https://pornhub.com', 'about:idk');   //opens 3 tabs of the allocated website //supposed to but blocked popups
