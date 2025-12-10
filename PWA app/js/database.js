@@ -13,8 +13,9 @@ function fetch_data() {
             // Create a table element and apply basic styling
             const table = document.createElement('table');
             table.style.borderCollapse = 'collapse';
-            table.style.width = '80%';
-
+            table.style.width = 'auto';
+            table.style.marginLeft = 'auto';
+            table.style.marginRight = 'auto';
             // ---------- Create table header ----------
             const thead = document.createElement('thead');
             const headerRow = document.createElement('tr');
@@ -23,9 +24,10 @@ function fetch_data() {
             Object.keys(data[0]).forEach(key => {
                 const th = document.createElement('th');
                 th.textContent = key; // Set column name
-                th.style.border = '1px solid black';
+                th.style.border = '2px solid black';
                 th.style.padding = '8px';
                 th.style.textAlign = 'center';
+                th.style.background = '#A69C94';
                 headerRow.appendChild(th); // Add header cell to the row
             });
 

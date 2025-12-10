@@ -8,11 +8,23 @@
 </head>
     
 <body>
-    <h1>See all chances</h1>
+    <button id="returnBtn">back</button>
+    <h1> All chances</h1>
     <p id="footnote">(i'm bad at maths so take it with a grain of salt)</p>
-    <div id="data-container"></div>
+    <p id="data-container"></p>
     
     <!-- JavaScript Modules -->
     <script type="module" src="js/database.js"></script>
+    <script>
+        const returnBtn = document.getElementById('returnBtn')
+
+        returnBtn.addEventListener('click', () => {
+            if (Math.random() < 1/3) {
+                window.location = 'http://localhost:8000/'
+            } else {
+                returnBtn.textContent = 'LOL TRY AGAIN';
+            }
+        });
+    </script>
 </body>
 </html>
