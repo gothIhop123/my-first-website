@@ -61,6 +61,12 @@ button {
     cursor: pointer
 }
 
+button:hover {
+    background-color: #555;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+}
+
 button.secondary {
     background: transparent;
     color: var(--accent);

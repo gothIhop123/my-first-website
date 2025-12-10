@@ -14,12 +14,20 @@ button {
     font-size: 3em;
     padding: 5px 30px;
     border-radius: 8px;
+    display: flex;
 }
 
 button:hover {
-    background-color: #555;
-    color: white;
+    background-color: #b1b1b1;
+    color: rgb(0, 0, 0);
     cursor: pointer;
+}
+
+#checkdata {
+    margin-left: auto;
+    margin-right: auto;
+    margin: 5px auto;
+    display: none;
 }
 
 p {

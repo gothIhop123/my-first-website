@@ -12,6 +12,7 @@ const d20roll = document.getElementById('d20roll')
 const jumpscare  = document.getElementById('jumpscare')
 const jumpscare_audio = document.getElementById('jumpscare_audio')
 const weed_audio = document.getElementById('weed_audio')
+const checkdata = document.getElementById('checkdata')
 
 //important setup
 dice.src = `images/dice1.png`;
@@ -21,6 +22,17 @@ var randomNum = null;   //turns the var into a global for use outside functions
 var d20num = null;
 var quarterchance = null;
 let counter = 0;
+let caseResults = {
+    case1: 0,
+    case2: 0,
+    case3: 0,
+    case4: 0,
+    case5: 0,
+    case6: 0,
+    case2_or_5: 0,
+    case3_or_4: 0,
+    d20cases: []
+}
 
 //enables toggles for cases
 let activated2 = false;
@@ -70,7 +82,7 @@ function d20_die_hider() {
 function rand(min, max) {
     return Math.floor(Math.random() * (max /*max*/ - min /*min*/ + 1)) + min /*min*/; //randomise a number
 };
-
+//                                                  BUTTON FUNCTIONS
 //has a 2 in 3 chance to fail on clicking the die 
 function diebtn() {
     roll.disabled = true;
@@ -80,10 +92,13 @@ function diebtn() {
         
         setTimeout(() => {
             if (roll_times <= 0) {
+                checkdata.style.display = 'block';
                 roll.disabled = true;
             } else {
                 setTimeout(() => {      //makes the die disabled for 800 millisecond after use
-                roll.disabled = false;
+                    if (d20roll.style.visibility !== 'visible') {
+                        roll.disabled = false;
+                    }
                 }, 800);
             }
         }, pausetime);
@@ -100,9 +115,15 @@ function d20btn() {
     d20animation();
     setTimeout(() => {
         d20roll.disabled = false;
-    }, pausetime);
+    }, pausetime * 2);
 };
 
+function checkdataBtn() {
+    checkdata.style.display = 'none';
+    roll.disabled = false;
+    roll_times = 2;
+    window.open('database.html');  
+};
 
 //functions
 
@@ -135,35 +156,41 @@ function outcomes() {
             //inverses the color of the page and EVERYTHING ELSE
                 case3();
                 counter += 1;
+                caseResults.case3++;
                 break;
             
             case 4:     
             //shows d20
                 case4();
-                counter += 1;                  
+                counter += 1;       
+                caseResults.case4++;           
                 break;
             
             case 2:                                         
             //gives seizures to epileptic people
                 case2();
                 counter += 1;
+                caseResults.case2++;
                 break;
             
             case 5:
             //shows funny image
                 case5();
                 counter += 1;
+                caseResults.case5++;
                 break;
             case 1:           
             //has a 1 in 25 chance to send you to fun land
                 case1();
                 counter += 1;
+                caseResults.case1++;
                 break;
             
             case 6:
             //reveals a d20 die     
                 case6();
                 counter += 1;
+                caseResults.case6++;
                 break;
         };
     }, 100);
@@ -171,7 +198,7 @@ function outcomes() {
 
 function d20animation() {       //d20 die animation
     d20num = rand(1, 20);  //randomise the d20 die  //is a global variable now 
-    let frames = 20;
+    let frames = 25;
     let animation = setInterval(() => {
         let temp = Math.floor(Math.random() * 20) + 1;      //animation for d20 roll
         d20.textContent = temp;
@@ -208,6 +235,7 @@ function d20case4() {
                 }, 5000);
             }, 80);
             counter += 2;
+            caseResults.d20cases.push(20)
             break;
         
         default:
@@ -225,12 +253,14 @@ function d20case6() {
                 window.alert('67');
                 counter += 1;
             }, 80);
+            caseResults.d20cases.push(1)
             break;
         case 7:
             setTimeout(() => {
                 window.alert('sickswan');
                 counter += 1;
             }, 80);
+            caseResults.d20cases.push(7)
             break;
         case 9:
             setTimeout(() => {
@@ -238,9 +268,10 @@ function d20case6() {
                 counter += 1;
             }, 80);
             setTimeout(() => {
-                window.open('https://pornhub.com', 'about:idk').focus();
+                window.open('https://pornhub.com', 'about:idk');
                 counter += 1;
             }, 500);
+            caseResults.d20cases.push(9)
             break;
         default:
             label.textContent = 'nah';
@@ -256,14 +287,14 @@ function case1() {
     if (Math.random() < 1 / 25) {   //1 in 25 chance to open new tabs
         let i = 2;
         while (i >= 0) {
-            window.open('https://pornhub.com', 'about:idk').focus();    //opens 3 tabs of the allocated website
+            window.open('https://pornhub.com', 'about:idk');   //opens 3 tabs of the allocated website //supposed to but blocked popups
             i--;
         }
         counter += 2;
     } else {
         setTimeout(() => {
             label.textContent = 'this does nothing unlucky!';
-        }, 800);
+        }, 500);
         
     }
 };
@@ -288,7 +319,7 @@ function case2() {
                 activated2 = true;  //makes it so that getting randomNum 2 twice does not flash again
                 case2or5();
             }
-        }, 50); //lasts around 800 milliseconds
+        }, 50); //lasts around 1500 milliseconds
     } else {
         label.textContent = 'Sorry about last time';
         activated2 = false;
@@ -320,7 +351,7 @@ function case5() {
         activated5 = true;
         setTimeout(() => {
             case2or5();            
-        }, pausetime);
+        }, 800);
     } else {
         case5img.style.visibility = 'hidden';   //hides case4img 
         activated5 = false;
@@ -349,6 +380,7 @@ function case3or4() {
                 window.open("feet.html");
             }, 200);
             counter += 1;
+            caseResults.case3_or_4++;
             break;
     }
 };
@@ -356,11 +388,10 @@ function case3or4() {
 //has a 1 in 4 chance to send use to the fanfic site 
 //has a 1 in 4 chance to jumpscare the user with the sound
 function case2or5() {
+    caseResults.case2_or_5++;
     switch (quarterchance) {
         case 1:
-            setTimeout(() => {
                 window.open("fanfic.html");
-            }, 200);
             counter += 1;
             break;
         case 2:
@@ -369,7 +400,7 @@ function case2or5() {
             jumpscare.style.visibility = 'visible';
             setTimeout(() => {
                 lightmode();
-                jumpscare.style.visibility = 'hidden';       
+                jumpscare.style.visibility = 'hidden';   
             }, 850);
             counter += 1;
             break;
@@ -379,6 +410,8 @@ function case2or5() {
 //eventlisteners
 roll.addEventListener('click', diebtn);
 d20roll.addEventListener('click', d20btn);
+
+checkdata.addEventListener('click', checkdataBtn);
 
 
 document.body.onkeydown = function(e){
@@ -400,5 +433,3 @@ document.body.onkeydown = function(e){
         }
     }
 };
-
-console.log(counter)

@@ -5,7 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
     
+<body>
+    <button id="data">See all chances</button>
+    <script type="module" src="database.js"></script>
+    <script type="module" src="app.js"></script>
+    <script>
+        fetch("/get-results")
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("output").textContent =
+                    JSON.stringify(data, null, 2);
+            });
+    </script>
 </body>
 </html>

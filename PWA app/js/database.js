@@ -1,5 +1,6 @@
 import * as App from "/js/app.js";
 
+
 function fetch_data() {
     // Fetch data from the '/data' endpoint
     fetch('/data')
@@ -13,7 +14,7 @@ function fetch_data() {
             // Create a table element and apply basic styling
             const table = document.createElement('table');
             table.style.borderCollapse = 'collapse';
-            table.style.width = '100%';
+            table.style.width = '80%';
 
             // ---------- Create table header ----------
             const thead = document.createElement('thead');
@@ -25,7 +26,7 @@ function fetch_data() {
                 th.textContent = key; // Set column name
                 th.style.border = '1px solid black';
                 th.style.padding = '8px';
-                th.style.textAlign = 'left';
+                th.style.textAlign = 'center';
                 headerRow.appendChild(th); // Add header cell to the row
             });
 
@@ -83,3 +84,5 @@ function fetch_data() {
     // Handle any errors that occur during the fetch
     .catch(error => console.error('Error fetching data:', error));
 }
+
+d20roll.addEventListener('click', fetch_data);

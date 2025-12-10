@@ -4,3 +4,22 @@
     font-size: 30px;
     margin: 6px
 }
+
+button {
+    align-content: center;
+    font-size: 3em;
+    padding: 5px 30px;
+    border-radius: 8px;
+}
+
+button:hover {
+    background-color: #555;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+}
+
+#checkdata {
+    text-align: center !important;
+    margin: 5px;
+    visibility: hidden;
+}

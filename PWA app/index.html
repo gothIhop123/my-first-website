@@ -6,19 +6,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self';">
-
     <title>Document</title>
 </head>
 
 <body id="body" class="dark">
-    <img id="jumpscare" src="images/toy-chica-bird.gif">
-    <audio id="jumpscare_audio" src="images/loud-screech-noise.mp3"></audio>
-    <audio id="weed_audio" src="images/snoop-dogg-base-instrumental-mp3cut.mp3"></audio>
+    <img id="jumpscare" src="images/toy-chica-bird.gif" alt="jumpscare">
+    <audio id="jumpscare_audio" src="images/loud-screech-noise.mp3" alt="jumpscare"></audio>
+    <audio id="weed_audio" src="images/snoop-dogg-base-instrumental-mp3cut.mp3" alt="stupidaudio"></audio>
     <h1 id="h1">Dice roller</h1>
     <div class="dices">
         <div class="column">
-            <img id="dice">
+            <img id="dice" alt="die">
             <button id="roll">roll</button>
         </div>
 
@@ -30,15 +28,13 @@
     <p> 
         <label id="label"></label>
         <br>
-        <img id="case5" src="images/fuckasshampter.jpeg">
+        <button id="checkdata">check all chances</button>
+        <br>
+        <img id="case5" src="images/fuckasshampter.jpeg" alt="stupidhampter"><br>
     </p>
     <script type="module" src="js/app.js"></script>
     <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js')
-            .then(reg => console.log("SW registered:", reg.scope))
-            .catch(err => console.error("SW registration failed:", err));
-        }
+        navigator.serviceWorker.register("sw.js");
     </script>
 </body>
 
