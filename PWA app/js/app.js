@@ -115,6 +115,7 @@ function d20btn() {
     d20animation();
     setTimeout(() => {
         d20roll.disabled = false;
+        checkdata.disabled = false;
     }, pausetime * 2);
 };
 
@@ -342,6 +343,7 @@ function case4() {
     d20roll.style.visibility = 'visible';
     d20.style.visibility = 'visible';
     roll_disabler();
+    checkdata.disabled = true;
 };
 
 //hampter
@@ -363,6 +365,7 @@ function case6() {
     d20roll.style.visibility = 'visible';
     d20.style.visibility = 'visible';
     roll_disabler();
+    checkdata.disabled = true;
 };
 
 //has a 2 in 4 chance to turn the page into lightmode if case 3 has already happened
