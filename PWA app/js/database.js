@@ -1,4 +1,5 @@
 import * as App from "/js/app.js";
+import { decrement, getRolltimes } from "/js/app.js";
 
 function fetch_data() {
     // Fetch data from the '/data' endpoint

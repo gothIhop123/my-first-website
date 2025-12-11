@@ -2,6 +2,10 @@
 //const { text } = require("express");
 import * as data from "/js/database.js";
 //necessary consts
+import { gameState, saveState, loadState } from './siteState.js';
+
+loadState();
+
 const roll = document.getElementById('roll');
 const label = document.getElementById('label');
 const case5img = document.getElementById('case5')
@@ -15,12 +19,45 @@ const weed_audio = document.getElementById('weed_audio')
 const checkdata = document.getElementById('checkdata')
 
 //important setup
-let roll_times = 2;      //times you can roll before being unable to
 let pausetime = 1800;    //constant time it takes for delays
 var randomNum = null;   //turns the var into a global for use outside functions
 var d20num = null;
 var quarterchance = null;
+
 let counter = 0;
+
+const ROLL_KEY = 'mygame_roll_times'; // key in localStorage
+const DEFAULT_ROLLS = 2;  //times you can roll before being unable to
+
+function readRollsFromStorage() {
+    const raw = localStorage.getItem(ROLL_KEY);
+    const n = Number(raw);
+    if (raw === null) return DEFAULT_ROLLS;
+    if (!Number.isFinite(n)) return DEFAULT_ROLLS;
+    return n;
+}
+
+function writeRollsToStorage(n) {
+    localStorage.setItem(ROLL_KEY, String(n));
+    const disabled = n <= 0;
+}
+
+// Public API
+export function getRolltimes() {
+    return readRollsFromStorage();
+}
+
+export function decrement() {
+    const cur = readRollsFromStorage();
+    const next = cur - 1;
+    writeRollsToStorage(next);
+    return next;
+}
+
+export function resetRolltimes() {
+    writeRollsToStorage(DEFAULT_ROLLS);
+}
+
 let caseResults = {
     case1: 0,
     case2: 0,
@@ -84,20 +121,24 @@ function rand(min, max) {
 //                                                  BUTTON FUNCTIONS
 //has a 2 in 3 chance to fail on clicking the die 
 function diebtn() {
-    console.log('counter:', counter)
+    console.log(getRolltimes());
     roll.disabled = true;
+    gameState.rollDisabled = true;
     if (Math.random() < 1 / 3) {
         dice_animation();
-        roll_times--;
+        decrement();
         
         setTimeout(() => {
-            if (roll_times <= 0) {
+            if (getRolltimes() < 0) {
                 checkdata.style.display = 'block';
                 roll.disabled = true;
+                gameState.rollDisabled = true;
+                saveState();
             } else {
                 setTimeout(() => {      //makes the die disabled for 800 millisecond after use
                     if (d20roll.style.visibility !== 'visible') {
                         roll.disabled = false;
+                        gameState.rollDisabled = false;
                     }
                 }, 800);
             }
@@ -106,12 +147,13 @@ function diebtn() {
     } else {            //instantly makes the die usable if it failed
         label.textContent = 'Try again?';
         roll.disabled = false;
+        gameState.rollDisabled = false;
     };
 };
 
 //makes the d20 button disables after use to prevent spam
 function d20btn() {     
-    d20roll.disabled = true;
+    d20roll.disabled = false;
     d20animation();
     setTimeout(() => {
         d20roll.disabled = false;
@@ -121,9 +163,8 @@ function d20btn() {
 
 function checkdataBtn() {
     checkdata.style.display = 'none';
-    roll.disabled = false;
-    roll_times = 2;
-    window.open('database.html');  
+    resetRolltimes();
+    window.location = 'database.html';  
 };
 
 //functions
@@ -156,41 +197,40 @@ function outcomes() {
             case 3:                                         
             //inverses the color of the page and EVERYTHING ELSE
                 case3();
-                counter += 1;
                 caseResults.case3++;
                 break;
             
             case 4:     
             //shows d20
                 case4();
-                counter += 1;       
+                ;       
                 caseResults.case4++;           
                 break;
             
             case 2:                                         
             //gives seizures to epileptic people
                 case2();
-                counter += 1;
+                ;
                 caseResults.case2++;
                 break;
             
             case 5:
             //shows funny image
                 case5();
-                counter += 1;
+                ;
                 caseResults.case5++;
                 break;
             case 1:           
             //has a 1 in 25 chance to send you to fun land
                 case1();
-                counter += 1;
+                ;
                 caseResults.case1++;
                 break;
             
             case 6:
             //reveals a d20 die     
                 case6();
-                counter += 1;
+                
                 caseResults.case6++;
                 break;
         };
@@ -237,7 +277,7 @@ function d20case4() {
                     weed_audio.pause();          
                 }, 5000);
             }, 80);
-            counter += 2;
+            
             caseResults.d20cases.push(20)
             break;
         
@@ -254,25 +294,21 @@ function d20case6() {
         case 1:
             setTimeout(() => {  //each need a timeout to properly show that final frame of the animation
                 window.alert('67');
-                counter += 1;
             }, 80);
             caseResults.d20cases.push(1)
             break;
         case 7:
             setTimeout(() => {
                 window.alert('sickswan');
-                counter += 1;
             }, 80);
             caseResults.d20cases.push(7)
             break;
         case 9:
             setTimeout(() => {
                 window.alert('nice');
-                counter += 1;
             }, 80);
             setTimeout(() => {
                 window.open('https://pornhub.com', 'about:idk');
-                counter += 1;
             }, 500);
             caseResults.d20cases.push(9)
             break;
@@ -293,7 +329,7 @@ function case1() {
             window.open('https://pornhub.com', 'about:idk');   //opens 3 tabs of the allocated website //supposed to but blocked popups
             i--;
         }
-        counter += 2;
+        
     } else {
         setTimeout(() => {
             label.textContent = 'this does nothing unlucky!';
@@ -326,6 +362,8 @@ function case2() {
     } else {
         label.textContent = 'Sorry about last time';
         activated2 = false;
+        gameState.activated2 = false;
+        saveState();
     };
 };
 
@@ -334,6 +372,8 @@ function case3() {
     if (activated3 === false) {
         darkmode()
         activated3 = true;
+        gameState.activated3 = true;
+        saveState();
     } else {
         case3or4();
     }
@@ -353,12 +393,16 @@ function case5() {
     if (activated5 === false) {
         case5img.style.visibility = 'visible';  //shows case4img
         activated5 = true;
+        gameState.activated5 = true;
+        saveState();
         setTimeout(() => {
             case2or5();            
         }, 800);
     } else {
         case5img.style.visibility = 'hidden';   //hides case4img 
         activated5 = false;
+        gameState.activated5 = false;
+        saveState();
     };
 };
 
@@ -378,13 +422,16 @@ function case3or4() {
         case 2:
             lightmode();
             activated3 = false;
-            counter += 1;
+            gameState.activated3 = false;
+            saveState();
             break;
         case 3:
-            setTimeout(() => {
-                window.open("feet.html");
-            }, 200);
-            counter += 1;
+            //if (getRolltimes() === -1) {
+                //window.location = 'database.html'
+            {setTimeout(() => {
+                    window.location = "feet.html";
+                }, 200);
+            }
             caseResults.case3_or_4++;
             break;
     }
@@ -396,8 +443,12 @@ function case2or5() {
     caseResults.case2_or_5++;
     switch (quarterchance) {
         case 1:
-                window.open("fanfic.html");
-            counter += 1;
+            //if (getRolltimes() === -1) {
+                //window.location = 'database.html'
+            {setTimeout(() => {
+                    window.location = "fanfic.html";
+                }, 200);
+            }
             break;
         case 2:
             jumpscare_audio.currentTime = 0;
@@ -407,7 +458,7 @@ function case2or5() {
                 lightmode();
                 jumpscare.style.visibility = 'hidden';   
             }, 850);
-            counter += 1;
+            
             break;
     }
 };
@@ -442,3 +493,12 @@ document.body.onkeydown = function(e){
         }
     }
 };
+
+if (getRolltimes() <= -1 && checkdata) {
+    checkdata.style.display = 'block';
+    if (checkdata.style.display === 'block') {
+        roll.disabled = true;
+        gameState.rollDisabled = true;
+        saveState();
+    }
+}
