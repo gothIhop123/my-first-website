@@ -27,7 +27,7 @@ var quarterchance = null;
 let counter = 0;
 
 const ROLL_KEY = 'mygame_roll_times'; // key in localStorage
-const DEFAULT_ROLLS = 2;  //times you can roll before being unable to
+const DEFAULT_ROLLS = 10;  //times you can roll before being unable to
 
 function readRollsFromStorage() {
     const raw = localStorage.getItem(ROLL_KEY);
@@ -58,17 +58,19 @@ export function resetRolltimes() {
     writeRollsToStorage(DEFAULT_ROLLS);
 }
 
-let caseResults = {
-    case1: 0,
-    case2: 0,
-    case3: 0,
-    case4: 0,
-    case5: 0,
-    case6: 0,
-    case2_or_5: 0,
-    case3_or_4: 0,
-    d20cases: []
-}
+//all case results
+let case1result = 0;    //does nothing
+let case2result = 0;    //send you to link
+let case3result = 0;    //flashes screen
+let case4result = 0;    //invert colors
+let case5result = 0;    //gif overload of screen
+let case6result = 0;    //hampter
+let case7 = 0;  //reveal d20
+let case8 = 0;  //certain funny numbers that start with 6
+let case9 = 0;  //revert colors
+let case10 = 0; //send to funny page
+let case11 = 0; //send to fanfic page
+let case12 = 0; //jumpscare
 
 //enables toggles for cases
 let activated2 = false;
@@ -78,7 +80,7 @@ let activated5 = false;
 let space_pressed = false;
 //                                HELPER FUNCTIONS
 
-//inverts all the colors
+    //inverts all the colors
 function darkmode() {
     body.style.background = '#081018';
     body.style.color = '#e6f3f2';
@@ -197,41 +199,30 @@ function outcomes() {
             case 3:                                         
             //inverses the color of the page and EVERYTHING ELSE
                 case3();
-                caseResults.case3++;
                 break;
             
             case 4:     
             //shows d20
-                case4();
-                ;       
-                caseResults.case4++;           
+                case4();         
                 break;
             
             case 2:                                         
             //gives seizures to epileptic people
                 case2();
-                ;
-                caseResults.case2++;
                 break;
             
             case 5:
             //shows funny image
                 case5();
-                ;
-                caseResults.case5++;
                 break;
             case 1:           
             //has a 1 in 25 chance to send you to fun land
                 case1();
-                ;
-                caseResults.case1++;
                 break;
             
             case 6:
             //reveals a d20 die     
                 case6();
-                
-                caseResults.case6++;
                 break;
         };
     }, 100);
@@ -277,14 +268,16 @@ function d20case4() {
                     weed_audio.pause();          
                 }, 5000);
             }, 80);
-            
-            caseResults.d20cases.push(20)
+            case5result++;
+            fetch('/update-case/5', { method: 'POST' });
             break;
         
         default:
             label.textContent = 'nah';
+            case1result++;
+            fetch('/update-case/1', { method: 'POST' });
             break;
-    }
+    };
     d20_die_hider();
 };
 
@@ -295,13 +288,15 @@ function d20case6() {
             setTimeout(() => {  //each need a timeout to properly show that final frame of the animation
                 window.alert('67');
             }, 80);
-            caseResults.d20cases.push(1)
+            case8++;
+            fetch('/update-case/8', { method: 'POST' });
             break;
         case 7:
             setTimeout(() => {
                 window.alert('sickswan');
             }, 80);
-            caseResults.d20cases.push(7)
+            case8++;
+            fetch('/update-case/8', { method: 'POST' });
             break;
         case 9:
             setTimeout(() => {
@@ -310,10 +305,15 @@ function d20case6() {
             setTimeout(() => {
                 window.open('https://pornhub.com', 'about:idk');
             }, 500);
-            caseResults.d20cases.push(9)
+            case2result++;
+            case8++;
+            fetch('/update-case/8', { method: 'POST' });
+            fetch('/update-case/2', { method: 'POST' });
             break;
         default:
             label.textContent = 'nah';
+            case1result++;
+            fetch('/update-case/1', { method: 'POST' });
             break;
     };
     d20_die_hider();
@@ -328,13 +328,15 @@ function case1() {
         while (i >= 0) {
             window.open('https://pornhub.com', 'about:idk');   //opens 3 tabs of the allocated website //supposed to but blocked popups
             i--;
-        }
-        
+        };
+        case2result++;
+        fetch('/update-case/2', { method: 'POST' });
     } else {
         setTimeout(() => {
             label.textContent = 'this does nothing unlucky!';
         }, 500);
-        
+        case1result++;
+        fetch('/update-case/1', { method: 'POST' });
     }
 };
 
@@ -359,11 +361,15 @@ function case2() {
                 case2or5();
             }
         }, 50); //lasts around 1500 milliseconds
+        case3result++;
+        fetch('/update-case/3', { method: 'POST' });
     } else {
         label.textContent = 'Sorry about last time';
         activated2 = false;
         gameState.activated2 = false;
         saveState();
+        case1result++;
+        fetch('/update-case/1', { method: 'POST' });
     };
 };
 
@@ -374,6 +380,8 @@ function case3() {
         activated3 = true;
         gameState.activated3 = true;
         saveState();
+        case4result++;
+        fetch('/update-case/4', { method: 'POST' });
     } else {
         case3or4();
     }
@@ -386,6 +394,8 @@ function case4() {
     d20.style.visibility = 'visible';
     roll_disabler();
     checkdata.disabled = true;
+    case7++;
+    fetch('/update-case/7', { method: 'POST' });
 };
 
 //hampter
@@ -398,11 +408,15 @@ function case5() {
         setTimeout(() => {
             case2or5();            
         }, 800);
+        case6result++;
+        fetch('/update-case/6', { method: 'POST' });
     } else {
         case5img.style.visibility = 'hidden';   //hides case4img 
         activated5 = false;
         gameState.activated5 = false;
         saveState();
+        case6result++;
+        fetch('/update-case/6', { method: 'POST' });
     };
 };
 
@@ -412,6 +426,8 @@ function case6() {
     d20.style.visibility = 'visible';
     roll_disabler();
     checkdata.disabled = true;
+    case7++;
+    fetch('/update-case/7', { method: 'POST' });
 };
 
 //has a 2 in 4 chance to turn the page into lightmode if case 3 has already happened
@@ -424,15 +440,21 @@ function case3or4() {
             activated3 = false;
             gameState.activated3 = false;
             saveState();
+            case9++;
+            fetch('/update-case/9', { method: 'POST' });
             break;
         case 3:
             //if (getRolltimes() === -1) {
                 //window.location = 'database.html'
-            {setTimeout(() => {
+            setTimeout(() => {
                     window.location = "feet.html";
                 }, 200);
-            }
-            caseResults.case3_or_4++;
+            case10++;
+            fetch('/update-case/10', { method: 'POST' });
+            break;
+        default: 
+            case1result++;
+            fetch('/update-case/1', { method: 'POST' });
             break;
     }
 };
@@ -440,15 +462,15 @@ function case3or4() {
 //has a 1 in 4 chance to send use to the fanfic site 
 //has a 1 in 4 chance to jumpscare the user with the sound
 function case2or5() {
-    caseResults.case2_or_5++;
     switch (quarterchance) {
         case 1:
             //if (getRolltimes() === -1) {
                 //window.location = 'database.html'
-            {setTimeout(() => {
+            setTimeout(() => {
                     window.location = "fanfic.html";
                 }, 200);
-            }
+            case11++;
+            fetch('/update-case/11', { method: 'POST' });
             break;
         case 2:
             jumpscare_audio.currentTime = 0;
@@ -458,7 +480,13 @@ function case2or5() {
                 lightmode();
                 jumpscare.style.visibility = 'hidden';   
             }, 850);
-            
+            case12++;
+            fetch('/update-case/12', { method: 'POST' });
+            break;
+        
+        default: 
+            case1result++;
+            fetch('/update-case/1', { method: 'POST' });
             break;
     }
 };

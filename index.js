@@ -23,6 +23,32 @@ app.get('/data', (req, res) => {
   });
 });
 
+app.post('/update-case/:caseId', (req, res) => {
+  const caseId = req.params.caseId;
+  const sql = 'UPDATE chances SET Frequency = Frequency + 1 WHERE extID = ?';
+  
+  db.run(sql, [caseId], (err) => {
+    if (err) {
+      console.error('DB Error:', err);
+      return res.status(500).json({ error: err.message });
+    }
+    console.log(`Updated case ${caseId}, rows affected: ${this.changes}`);
+    res.json({ success: true });
+  });
+});
+
+app.post('/reset', (req, res) => {
+  const sql = 'UPDATE chances SET Frequency = 0';
+  
+  db.run(sql, (err) => {
+    if (err) {
+      console.error('DB Error:', err);
+      return res.status(500).json({ error: err.message });
+    }
+    console.log(`all frequency reset`);
+    res.json({ success: true });
+  });
+});
 
 // Serve HTML pages
 app.get("/", (req, res) => res.sendFile(path.join(__dirname, "PWA app", "index.html")));

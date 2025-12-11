@@ -21,7 +21,7 @@ VALUES
     ),
 
     (5,
-    "gif overload of scree",
+    "gif overload of screen",
     "0.8%"
     ),
 
